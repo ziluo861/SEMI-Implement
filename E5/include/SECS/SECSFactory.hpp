@@ -4,5 +4,5 @@
 #include <memory>
 class SECSFactory {
 public:
-    static std::unique_ptr<SECSItemBase> createItem(FormatCode _code);
+  static std::unique_ptr<SECSItemBase> createItem(FormatCode _code);
 };

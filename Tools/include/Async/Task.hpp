@@ -5,8 +5,7 @@
 #include <stdexcept>
 #include <utility>
 
-template <typename T>
-struct Task {
+template <typename T> struct Task {
   struct promise_type {
     T value_;
     std::exception_ptr exception_{};
@@ -34,13 +33,14 @@ struct Task {
     std::suspend_never initial_suspend() const noexcept { return {}; }
     struct Final_Awaiter {
       bool await_ready() const noexcept { return false; }
-      std::coroutine_handle<> await_suspend(std::coroutine_handle<promise_type> h) noexcept {
+      std::coroutine_handle<>
+      await_suspend(std::coroutine_handle<promise_type> h) noexcept {
         auto &handle = h.promise();
         WaitingNode *head =
             handle.cache_.exchange(instance(), std::memory_order_acq_rel);
         handle.cache_.notify_all();
         if (head && head != instance() && head->node_) {
-            return head->node_;
+          return head->node_;
         }
         return std::noop_coroutine();
       }
@@ -48,9 +48,7 @@ struct Task {
     };
     Final_Awaiter final_suspend() noexcept { return {}; }
     void return_value(T val) { value_ = std::move(val); }
-    void unhandled_exception() {
-      exception_ = std::current_exception();
-    }
+    void unhandled_exception() { exception_ = std::current_exception(); }
   };
   explicit Task(std::coroutine_handle<promise_type> handle) : handle_(handle) {}
   ~Task() {
@@ -97,16 +95,18 @@ struct Task {
       auto &p = self.handle_.promise();
       auto *next = Node.next_;
       if (p.exception_) {
-        if (next && next->node_) next->node_.resume();
+        if (next && next->node_)
+          next->node_.resume();
         if (is_add_) {
           p.release_ref_and_is_last();
-        }      
+        }
         std::rethrow_exception(p.exception_);
       }
       T result = p.value_;
-      if (next && next->node_) next->node_.resume();
+      if (next && next->node_)
+        next->node_.resume();
       if (is_add_) {
-          p.release_ref_and_is_last();
+        p.release_ref_and_is_last();
       }
       return result;
     }
@@ -155,13 +155,19 @@ struct Task {
       auto &p = handle_.promise();
       auto *next = Node.next_;
       if (p.exception_) {
-        if (next && next->node_) next->node_.resume();
-        if (is_add_) {p.release_ref_and_is_last();}
+        if (next && next->node_)
+          next->node_.resume();
+        if (is_add_) {
+          p.release_ref_and_is_last();
+        }
         std::rethrow_exception(p.exception_);
       }
       T result = std::move(p.value_);
-      if (next && next->node_) next->node_.resume();
-      if (is_add_) { p.release_ref_and_is_last(); }
+      if (next && next->node_)
+        next->node_.resume();
+      if (is_add_) {
+        p.release_ref_and_is_last();
+      }
 
       return result;
     }
@@ -211,7 +217,7 @@ struct Task {
     return p.value_;
   }
 
-    T get() && {
+  T get() && {
     if (!handle_)
       throw std::logic_error("Task used after move");
     auto &p = handle_.promise();
@@ -287,13 +293,14 @@ template <> struct Task<void> {
     std::suspend_never initial_suspend() const noexcept { return {}; }
     struct Final_Awaiter {
       bool await_ready() const noexcept { return false; }
-      std::coroutine_handle<> await_suspend(std::coroutine_handle<promise_type> h) noexcept {
+      std::coroutine_handle<>
+      await_suspend(std::coroutine_handle<promise_type> h) noexcept {
         auto &handle = h.promise();
         WaitingNode *head =
             handle.cache_.exchange(instance(), std::memory_order_acq_rel);
         handle.cache_.notify_all();
         if (head && head != instance() && head->node_) {
-            return head->node_;
+          return head->node_;
         }
         return std::noop_coroutine();
       }
@@ -301,9 +308,7 @@ template <> struct Task<void> {
     };
     Final_Awaiter final_suspend() noexcept { return {}; }
     void return_void() {}
-    void unhandled_exception() {
-      exception_ = std::current_exception();
-    }
+    void unhandled_exception() { exception_ = std::current_exception(); }
   };
   explicit Task(std::coroutine_handle<promise_type> handle) : handle_(handle) {}
   ~Task() {
@@ -350,15 +355,17 @@ template <> struct Task<void> {
       auto &p = self.handle_.promise();
       auto *next = Node.next_;
       if (p.exception_) {
-        if (next && next->node_) next->node_.resume();
+        if (next && next->node_)
+          next->node_.resume();
         if (is_add_) {
           p.release_ref_and_is_last();
         }
         std::rethrow_exception(p.exception_);
       }
-      if (next && next->node_) next->node_.resume();
+      if (next && next->node_)
+        next->node_.resume();
       if (is_add_) {
-          p.release_ref_and_is_last();
+        p.release_ref_and_is_last();
       }
     }
     std::coroutine_handle<>
@@ -405,12 +412,18 @@ template <> struct Task<void> {
       auto &p = handle_.promise();
       auto *next = Node.next_;
       if (p.exception_) {
-        if (next && next->node_) next->node_.resume();
-        if (is_add_) {p.release_ref_and_is_last();}
+        if (next && next->node_)
+          next->node_.resume();
+        if (is_add_) {
+          p.release_ref_and_is_last();
+        }
         std::rethrow_exception(p.exception_);
       }
-      if (next && next->node_) next->node_.resume();
-      if (is_add_) { p.release_ref_and_is_last(); }
+      if (next && next->node_)
+        next->node_.resume();
+      if (is_add_) {
+        p.release_ref_and_is_last();
+      }
       return;
     }
     std::coroutine_handle<>

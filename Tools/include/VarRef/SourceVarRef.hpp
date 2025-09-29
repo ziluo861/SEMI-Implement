@@ -1,9 +1,6 @@
-
-
-
 #pragma once
-#include <concepts>
 #include "VarRef.hpp"
+#include <concepts>
 
 template <typename TValue>
   requires EqualityComparable<TValue> && std::copy_constructible<TValue>
@@ -35,7 +32,7 @@ public:
     set_value(std::move(new_value));
     return *this;
   }
-  
+
   template <typename U>
     requires requires(ValueType &t, const U &u) { t -= u; }
   SourceVarRef &operator-=(const U &other) {
@@ -105,7 +102,8 @@ public:
 template <typename TValue>
   requires std::copy_constructible<TValue> && EqualityComparable<TValue>
 auto make_var_ref(TValue default_value) -> std::unique_ptr<VarRef<TValue>> {
-  return std::unique_ptr<VarRef<TValue>>(new VarRef<TValue>(std::move(default_value)));
+  return std::unique_ptr<VarRef<TValue>>(
+      new VarRef<TValue>(std::move(default_value)));
 }
 
 template <typename TValue>
@@ -120,7 +118,8 @@ template <typename TValue>
 auto make_var_ref(TValue default_value,
                   std::function<bool(const TValue &, const TValue &)> comparer)
     -> std::unique_ptr<VarRef<TValue>> {
-  return std::unique_ptr<VarRef<TValue>>(new VarRef<TValue>(std::move(default_value), std::move(comparer)));
+  return std::unique_ptr<VarRef<TValue>>(
+      new VarRef<TValue>(std::move(default_value), std::move(comparer)));
 }
 
 template <typename TValue>

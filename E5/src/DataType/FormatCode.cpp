@@ -102,7 +102,7 @@ std::string CodeNameExtension::GetCodeName(FormatCode code) {
   return it->second;
 }
 
-FormatCode CodeNameExtension::GetNameCode(const std::string& name) {
+FormatCode CodeNameExtension::GetNameCode(const std::string &name) {
   if (name.empty()) {
     throw std::invalid_argument("name is empty");
   }

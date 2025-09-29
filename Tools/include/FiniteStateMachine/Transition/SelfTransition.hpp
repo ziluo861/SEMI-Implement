@@ -1,54 +1,53 @@
 #pragma once
 
+#include "FiniteStateMachine/State/State.hpp"
 #include "Requirements/RequirementMonitor.hpp"
 #include <FiniteStateMachine/Transition/Transition.hpp>
-#include "FiniteStateMachine/State/State.hpp"
 
-template<typename TIndex>
-class SelfTransition : public Transition<TIndex> {
+template <typename TIndex> class SelfTransition : public Transition<TIndex> {
 private:
-    State<TIndex> *target_;
-    bool enter_history_;
-    using BaseType = Transition<TIndex>;
-    using CallbackType = typename BaseType::HandlerCallbackType;
+  State<TIndex> *target_;
+  bool enter_history_;
+  using BaseType = Transition<TIndex>;
+  using CallbackType = typename BaseType::HandlerCallbackType;
+
 public:
-    explicit SelfTransition(State<TIndex>& state, 
-        RequirementMonitor *requirementmonitor, 
-        CallbackType transitioncallback, 
-        bool enter_history) 
-            : BaseType(state, state,requirementmonitor, 
-                std::move(transitioncallback), enter_history),
-                target_(&state), enter_history_(enter_history){}
+  explicit SelfTransition(State<TIndex> &state,
+                          RequirementMonitor *requirementmonitor,
+                          CallbackType transitioncallback, bool enter_history)
+      : BaseType(state, state, requirementmonitor,
+                 std::move(transitioncallback), enter_history),
+        target_(&state), enter_history_(enter_history) {}
 
-    void Transit() override {
-        BaseType::set_blocked(true);
-        
-        target_->Exit();
-        BaseType::TakeTransitAction();
+  void Transit() override {
+    BaseType::set_blocked(true);
 
-        // if (enter_history_) {
-        //     target_->HistoryState()->Enter();
-        //     //target_->Enter();
-        // } else {
-        //     target_->EntranceState()->Enter();
-        // }
+    target_->Exit();
+    BaseType::TakeTransitAction();
 
-        State<TIndex>* enter_target = enter_history_
-        ? target_->HistoryState()
-        : target_->EntranceState();
+    // if (enter_history_) {
+    //     target_->HistoryState()->Enter();
+    //     //target_->Enter();
+    // } else {
+    //     target_->EntranceState()->Enter();
+    // }
 
-        enter_target->Enter();
+    State<TIndex> *enter_target =
+        enter_history_ ? target_->HistoryState() : target_->EntranceState();
 
-        if (auto* sm = target_->StateMachine()) {
-            State<TIndex>* leaf = enter_target;
-            while (leaf && !leaf->IsTerminal()) leaf = leaf->CurrentState();
+    enter_target->Enter();
 
-            if (leaf && leaf->Index() != target_->Index()) {
-                sm->NotifyTransition(target_->Index(), leaf->Index());
-            }
+    if (auto *sm = target_->StateMachine()) {
+      State<TIndex> *leaf = enter_target;
+      while (leaf && !leaf->IsTerminal())
+        leaf = leaf->CurrentState();
 
-            sm->UpdateCurrentState();
-            sm->FlushPendingTransitions();
-        }
+      if (leaf && leaf->Index() != target_->Index()) {
+        sm->NotifyTransition(target_->Index(), leaf->Index());
+      }
+
+      sm->UpdateCurrentState();
+      sm->FlushPendingTransitions();
     }
+  }
 };
