@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/luojian/1908/Semi/build/cmake_install.cmake",
+		"/Users/luojian/1908/Semi/build/E5/cmake_install.cmake",
+		"/Users/luojian/1908/Semi/build/Tools/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

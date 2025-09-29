@@ -1,0 +1,9 @@
+/Users/luojian/1908/Semi/build/CMakeFiles/Semi-Darwin.dir
+/Users/luojian/1908/Semi/build/CMakeFiles/edit_cache.dir
+/Users/luojian/1908/Semi/build/CMakeFiles/rebuild_cache.dir
+/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir
+/Users/luojian/1908/Semi/build/E5/CMakeFiles/edit_cache.dir
+/Users/luojian/1908/Semi/build/E5/CMakeFiles/rebuild_cache.dir
+/Users/luojian/1908/Semi/build/Tools/CMakeFiles/Tools.dir
+/Users/luojian/1908/Semi/build/Tools/CMakeFiles/edit_cache.dir
+/Users/luojian/1908/Semi/build/Tools/CMakeFiles/rebuild_cache.dir

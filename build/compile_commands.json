@@ -1,0 +1,134 @@
+[
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -I/Users/luojian/1908/Semi/Tools/include -g -std=gnu++2b -arch arm64 -o CMakeFiles/Semi-Darwin.dir/main.cpp.o -c /Users/luojian/1908/Semi/main.cpp",
+  "file": "/Users/luojian/1908/Semi/main.cpp",
+  "output": "/Users/luojian/1908/Semi/build/CMakeFiles/Semi-Darwin.dir/main.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/DataType/FormatCode.cpp.o -c /Users/luojian/1908/Semi/E5/src/DataType/FormatCode.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/DataType/FormatCode.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/DataType/FormatCode.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/ASCIIItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/ASCIIItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/ASCIIItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/ASCIIItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/BinaryItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/BinaryItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/BinaryItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/BinaryItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/BooleanItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/BooleanItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/BooleanItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/BooleanItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/CharactorItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/CharactorItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/CharactorItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/CharactorItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/DoubleItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/DoubleItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/DoubleItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/DoubleItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/FloatItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/FloatItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/FloatItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/FloatItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/ListItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/ListItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/ListItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/ListItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/Int8Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/Int8Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/Int8Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/Int8Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/Int16Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/Int16Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/Int16Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/Int16Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/Int32Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/Int32Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/Int32Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/Int32Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/Int64Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/Int64Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/Int64Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/Int64Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/UInt8Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/UInt8Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/UInt8Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/UInt8Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/UInt16Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/UInt16Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/UInt16Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/UInt16Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/UInt32Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/UInt32Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/UInt32Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/UInt32Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSItems/UInt64Item.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSItems/UInt64Item.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSItems/UInt64Item.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSItems/UInt64Item.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECS/SECSItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECS/SECSItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECS/SECSItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECS/SECSItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECS/SECSFactory.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECS/SECSFactory.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECS/SECSFactory.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECS/SECSFactory.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSHead/SECSHead.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSHead/SECSHead.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSHead/SECSHead.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSHead/SECSHead.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/E5/include -g -std=gnu++2b -arch arm64 -o E5/CMakeFiles/E5.dir/src/SECSMessageHandleItem.cpp.o -c /Users/luojian/1908/Semi/E5/src/SECSMessageHandleItem.cpp",
+  "file": "/Users/luojian/1908/Semi/E5/src/SECSMessageHandleItem.cpp",
+  "output": "/Users/luojian/1908/Semi/build/E5/CMakeFiles/E5.dir/src/SECSMessageHandleItem.cpp.o"
+},
+{
+  "directory": "/Users/luojian/1908/Semi/build",
+  "command": "/usr/bin/clang++ -I/Users/luojian/1908/Semi/Tools/include -g -std=gnu++2b -arch arm64 -o Tools/CMakeFiles/Tools.dir/src/FSM.cpp.o -c /Users/luojian/1908/Semi/Tools/src/FSM.cpp",
+  "file": "/Users/luojian/1908/Semi/Tools/src/FSM.cpp",
+  "output": "/Users/luojian/1908/Semi/build/Tools/CMakeFiles/Tools.dir/src/FSM.cpp.o"
+}
+]

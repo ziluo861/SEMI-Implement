@@ -1,0 +1,11 @@
+.cache/
+*.exe
+*.out
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+build/
+cmake-build-*/
+Semi-Darwin
