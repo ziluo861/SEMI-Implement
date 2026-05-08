@@ -1,5 +1,5 @@
 #pragma once
-#include <DataType/FormatCode.hpp>
+#include <FormatCode.hpp>
 #include <cstdint>
 #include <limits>
 #include <optional>

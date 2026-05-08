@@ -1,4 +1,4 @@
-#include "SECS/SentinelSECSItem.hpp"
+#include "SentinelSECSItem.hpp"
 #include <SECSMessageHandleItem.hpp>
 #include <memory>
 

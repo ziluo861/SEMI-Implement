@@ -1,8 +1,8 @@
 #pragma once
-#include <DataType/FormatCode.hpp>
-#include <SECS/SECSBase.hpp>
-#include <SECS/SECSFactory.hpp>
-#include <Utils/StringUtils.hpp>
+#include <FormatCode.hpp>
+#include <SECSBase.hpp>
+#include <SECSFactory.hpp>
+#include <StringUtils.hpp>
 #include <memory>
 #include <optional>
 class SECSParser {

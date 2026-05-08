@@ -1,6 +1,6 @@
 #pragma once
-#include <SECS/SECSItem.hpp>
-#include <Utils/StringUtils.hpp>
+#include <SECSItem.hpp>
+#include <StringUtils.hpp>
 #include <string>
 #include <string_view>
 

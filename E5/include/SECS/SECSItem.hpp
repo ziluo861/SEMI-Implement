@@ -1,5 +1,5 @@
 #pragma once
-#include <SECS/SECSBase.hpp>
+#include <SECSBase.hpp>
 #include <SECS/SECSFactory.hpp>
 #include <Utils/StringUtils.hpp>
 #include <sstream>

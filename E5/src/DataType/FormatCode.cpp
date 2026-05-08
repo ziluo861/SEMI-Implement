@@ -1,4 +1,4 @@
-#include "DataType/FormatCode.hpp"
+#include "FormatCode.hpp"
 
 std::regex CodeNameExtension::ParseReg(R"(^([a-zA-Z0-9]|\||\*|\?)+)",
                                        std::regex_constants::icase |

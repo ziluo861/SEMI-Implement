@@ -1,7 +1,7 @@
 #pragma once
 
-#include "DataType/FormatCode.hpp"
-#include "SECS/SECSBase.hpp"
+#include "FormatCode.hpp"
+#include "SECSBase.hpp"
 #include <optional>
 
 class SentinelSECSItem final : public SECSItemBase {

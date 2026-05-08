@@ -1,6 +1,6 @@
 #pragma once
-#include <DataType/FormatCode.hpp>
-#include <SECS/SECSBase.hpp>
+#include <FormatCode.hpp>
+#include <SECSBase.hpp>
 #include <memory>
 class SECSFactory {
 public:

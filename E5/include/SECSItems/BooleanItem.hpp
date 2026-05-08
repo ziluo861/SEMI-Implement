@@ -1,5 +1,5 @@
 #pragma once
-#include <SECS/SECSItem.hpp>
+#include <SECSItem.hpp>
 #include <bit>
 
 class BooleanItem : public SECSItem<BooleanItem> {

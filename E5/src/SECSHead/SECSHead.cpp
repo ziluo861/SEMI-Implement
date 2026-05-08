@@ -1,5 +1,5 @@
 
-#include "SECSHead/SECSHead.hpp"
+#include "SECSHead.hpp"
 
 SECSHead::valuetype SECSHead::StreamByte() const noexcept {
   return stream_byte_;

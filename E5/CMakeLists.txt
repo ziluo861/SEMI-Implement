@@ -10,8 +10,12 @@ set(Target "E5")
 add_library(${Target} STATIC)
 
 target_include_directories(${Target} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/DataType
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/SECS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/SECShead
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/SECSItems
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Utils
 )
 
 target_sources(${Target} PRIVATE 

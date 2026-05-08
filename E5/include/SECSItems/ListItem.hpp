@@ -1,7 +1,7 @@
 #pragma once
-#include <SECS/SECSBase.hpp>
-#include <SECS/SECSItem.hpp>
-#include <SECS/SECSParser.hpp>
+#include <SECSBase.hpp>
+#include <SECSItem.hpp>
+#include <SECSParser.hpp>
 #include <memory>
 #include <vector>
 
