@@ -62,7 +62,7 @@ public:
     }
     using value_type =
         std::invoke_result_t<std::decay_t<Callable>, std::decay_t<ARGS>...>;
-    auto task = std::make_shared<std::packaged_task<value_type()>>(
+    auto task = std::make_unique<std::packaged_task<value_type()>>(
         [_callable = std::forward<Callable>(callable),
          ... _args = std::forward<ARGS>(args)]() mutable {
           return std::invoke(std::move(_callable), std::move(_args)...);

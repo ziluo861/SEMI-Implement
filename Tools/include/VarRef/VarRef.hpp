@@ -128,7 +128,7 @@ public:
   explicit VarRef(ValueType defaultValue, ComparerType comparer = {},
                   const void *tag = nullptr)
       : Default_Value_(defaultValue), Value_(defaultValue),
-        comparer_(std::move(comparer)), alive_(std::make_shared<bool>(true)) {
+        comparer_(std::move(comparer)), alive_(std::make_unique<bool>(true)) {
     if (!comparer_) {
       comparer_id_ = nullptr;
     } else {
@@ -231,7 +231,7 @@ private:
   bool value_observed_ = false;
   std::size_t next_value_id = 0;
   std::size_t next_observed_id = 0;
-  std::shared_ptr<bool> alive_;
+  std::unique_ptr<bool> alive_;
   const void *comparer_id_{nullptr};
   void update_observed_state() {
     auto new_observed_state = !Value_Changed_Callbacks_.empty();

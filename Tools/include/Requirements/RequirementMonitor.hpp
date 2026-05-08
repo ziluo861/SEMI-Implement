@@ -13,7 +13,7 @@ private:
   std::vector<std::pair<std::size_t, CallbackType>> listeners_;
   int monitorCounter_{0};
   bool fulfilled_{false};
-  std::shared_ptr<bool> alive_;
+  std::unique_ptr<bool> alive_;
   std::size_t id_{0};
 
 public:
@@ -64,7 +64,7 @@ public:
       return *this;
     }
   };
-  RequirementMonitor() : alive_(std::make_shared<bool>(true)) {}
+  RequirementMonitor() : alive_(std::make_unique<bool>(true)) {}
   virtual ~RequirementMonitor() {
     if (alive_) {
       *alive_ = false;
@@ -135,7 +135,7 @@ private:
   void OnStateChange() { set_fulfilled(UpdateFulfilledState()); }
 
 protected:
-  using ValueType = std::shared_ptr<RequirementMonitor>;
+  using ValueType = std::unique_ptr<RequirementMonitor>;
   ValueType left_{nullptr};
   ValueType right_{nullptr};
   typename RequirementMonitor::fulfillsubscribe left_subscribe_{};
@@ -210,7 +210,7 @@ public:
 
 class NotRequirementMonitor : public RequirementMonitor {
 private:
-  using ValueType = std::shared_ptr<RequirementMonitor>;
+  using ValueType = std::unique_ptr<RequirementMonitor>;
   ValueType base_monitor_{nullptr};
   typename RequirementMonitor::fulfillsubscribe base_subscribe_{};
   void OnStateChange() { set_fulfilled(!base_monitor_->Fulfilled()); }
@@ -235,28 +235,28 @@ public:
           "NotRequirementMonitor: base monitor cannot be null");
     }
   }
-  std::shared_ptr<RequirementMonitor> get_base_monitor() && {
+  std::unique_ptr<RequirementMonitor> get_base_monitor() && {
     return std::move(base_monitor_);
   }
 };
 } // namespace detail
 
 template <typename... Monitors>
-std::shared_ptr<RequirementMonitor> make_and(Monitors &&...monitor) {
+std::unique_ptr<RequirementMonitor> make_and(Monitors &&...monitor) {
   static_assert(sizeof...(monitor) >= 2,
                 "AND operation requires at least 2 monitors");
   return (std::forward<Monitors>(monitor) & ...);
 }
 
 template <typename... Monitors>
-std::shared_ptr<RequirementMonitor> make_or(Monitors &&...monitor) {
+std::unique_ptr<RequirementMonitor> make_or(Monitors &&...monitor) {
   static_assert(sizeof...(monitor) >= 2,
                 "OR operation requires at least 2 monitors");
   return (std::forward<Monitors>(monitor) | ...);
 }
 
-inline std::shared_ptr<RequirementMonitor>
-make_not(std::shared_ptr<RequirementMonitor> &&m) {
+inline std::unique_ptr<RequirementMonitor>
+make_not(std::unique_ptr<RequirementMonitor> &&m) {
   if (!m)
     return nullptr;
 
@@ -264,43 +264,43 @@ make_not(std::shared_ptr<RequirementMonitor> &&m) {
     return std::move(*notp).get_base_monitor();
   }
 
-  return std::make_shared<detail::NotRequirementMonitor>(std::move(m));
+  return std::make_unique<detail::NotRequirementMonitor>(std::move(m));
 }
 
-inline std::shared_ptr<RequirementMonitor>
-operator&(std::shared_ptr<RequirementMonitor> &&left,
-          std::shared_ptr<RequirementMonitor> &&right) {
+inline std::unique_ptr<RequirementMonitor>
+operator&(std::unique_ptr<RequirementMonitor> &&left,
+          std::unique_ptr<RequirementMonitor> &&right) {
   if (!left)
     return right;
   if (!right)
     return left;
-  return std::make_shared<detail::AndRequirementMonitor>(std::move(left),
+  return std::make_unique<detail::AndRequirementMonitor>(std::move(left),
                                                          std::move(right));
 }
 
-inline std::shared_ptr<RequirementMonitor>
-operator|(std::shared_ptr<RequirementMonitor> &&left,
-          std::shared_ptr<RequirementMonitor> &&right) {
+inline std::unique_ptr<RequirementMonitor>
+operator|(std::unique_ptr<RequirementMonitor> &&left,
+          std::unique_ptr<RequirementMonitor> &&right) {
   if (!left)
     return right;
   if (!right)
     return left;
-  return std::make_shared<detail::OrRequirementMonitor>(std::move(left),
+  return std::make_unique<detail::OrRequirementMonitor>(std::move(left),
                                                         std::move(right));
 }
 
-inline std::shared_ptr<RequirementMonitor>
-operator^(std::shared_ptr<RequirementMonitor> &&left,
-          std::shared_ptr<RequirementMonitor> &&right) {
+inline std::unique_ptr<RequirementMonitor>
+operator^(std::unique_ptr<RequirementMonitor> &&left,
+          std::unique_ptr<RequirementMonitor> &&right) {
   if (!left)
     return right;
   if (!right)
     return left;
-  return std::make_shared<detail::XorRequirementMonitor>(std::move(left),
+  return std::make_unique<detail::XorRequirementMonitor>(std::move(left),
                                                          std::move(right));
 }
 
-inline std::shared_ptr<RequirementMonitor>
-operator!(std::shared_ptr<RequirementMonitor> &&m) {
+inline std::unique_ptr<RequirementMonitor>
+operator!(std::unique_ptr<RequirementMonitor> &&m) {
   return make_not(std::move(m));
 }

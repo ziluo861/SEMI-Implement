@@ -20,9 +20,9 @@ private:
   using EventCallbackType = std::function<void()>;
   using Self = State<TIndex>;
   std::atomic<bool> exiting_{false};
-  using state_handler = std::shared_ptr<IStateChangeHandler<TIndex>>;
+  using state_handler = std::unique_ptr<IStateChangeHandler<TIndex>>;
   TIndex index_;
-  std::unordered_map<TIndex, std::shared_ptr<Self>> child_states_;
+  std::unordered_map<TIndex, std::unique_ptr<Self>> child_states_;
   Self *parent_ = nullptr;
   Self *current_state_ = nullptr;
   Self *entrance_state_ = nullptr;
@@ -36,13 +36,13 @@ private:
 public:
   EventCallbackType entered_;
   EventCallbackType exited_;
-  std::shared_ptr<Self> entrance_owner;
-  std::shared_ptr<Self> exitus_owner;
+  std::unique_ptr<Self> entrance_owner;
+  std::unique_ptr<Self> exitus_owner;
   state_handler state_change_handler_;
-  std::vector<std::shared_ptr<Transition<TIndex>>> transitions_;
-  std::vector<std::shared_ptr<subscriptes_>> hold_subscriptes_;
+  std::vector<std::unique_ptr<Transition<TIndex>>> transitions_;
+  std::vector<std::unique_ptr<subscriptes_>> hold_subscriptes_;
   const TIndex &Index() const noexcept { return index_; }
-  const std::unordered_map<TIndex, std::shared_ptr<Self>> &
+  const std::unordered_map<TIndex, std::unique_ptr<Self>> &
   ChildStates() const noexcept {
     return child_states_;
   }
@@ -133,16 +133,16 @@ public:
     exiting_.store(false);
   }
 
-  State(TIndex index, std::vector<std::shared_ptr<Self>> child_states = {})
+  State(TIndex index, std::vector<std::unique_ptr<Self>> child_states = {})
       : State(index, state_handler{}, std::move(child_states)) {}
 
   State(TIndex index, state_handler handler,
-        std::vector<std::shared_ptr<Self>> child_states = {})
+        std::vector<std::unique_ptr<Self>> child_states = {})
       : State(index, std::move(handler), std::move(child_states),
               state_handler{}, state_handler{}) {}
 
   State(TIndex index, state_handler handler,
-        std::vector<std::shared_ptr<Self>> child_states,
+        std::vector<std::unique_ptr<Self>> child_states,
         state_handler entrance_handler, state_handler exitus_handler)
       : index_(index), state_change_handler_(std::move(handler)) {
     if (child_states.empty()) {
@@ -164,20 +164,20 @@ public:
       }
 
       entrance_owner =
-          std::make_shared<Self>(index, std::move(entrance_handler));
+          std::make_unique<Self>(index, std::move(entrance_handler));
       entrance_owner->parent_ = this;
       entrance_state_ = entrance_owner.get();
       current_state_ = entrance_state_;
 
-      exitus_owner = std::make_shared<Self>(index, std::move(exitus_handler));
+      exitus_owner = std::make_unique<Self>(index, std::move(exitus_handler));
       exitus_owner->parent_ = this;
       exitus_state_ = exitus_owner.get();
       is_terminal_ = false;
     }
   }
 
-  void addtransition(std::shared_ptr<Transition<TIndex>> transition,
-                     std::shared_ptr<subscriptes_> subscripte) {
+  void addtransition(std::unique_ptr<Transition<TIndex>> transition,
+                     std::unique_ptr<subscriptes_> subscripte) {
     transitions_.emplace_back(std::move(transition));
     hold_subscriptes_.emplace_back(std::move(subscripte));
   }

@@ -24,12 +24,12 @@ private:
   std::size_t id_ = 0;
   bool running_ = false;
   bool transiting_ = false;
-  std::shared_ptr<State<TIndex>> root_state_ = nullptr;
+  std::unique_ptr<State<TIndex>> root_state_ = nullptr;
   State<TIndex> *current_state_ = nullptr;
   using ExitSub = typename Transitable<TIndex>::blocksubscribe;
-  std::shared_ptr<StateMachineEnterExitTransitable<TIndex>>
+  std::unique_ptr<StateMachineEnterExitTransitable<TIndex>>
       fsm_enter_exit_transtions_;
-  std::shared_ptr<ExitSub> hold_exit_sub_;
+  std::unique_ptr<ExitSub> hold_exit_sub_;
   std::unordered_map<TIndex, State<TIndex> *> all_states_;
   std::unordered_set<Transitable<TIndex> *> padding_unblocked_transitions_;
   void OnBlockStateChange(Transitable<TIndex> *_transitable) {
@@ -82,8 +82,8 @@ private:
           "Departure and destination not in the same tree");
     return lca;
   }
-  using state_handler = std::shared_ptr<IStateChangeHandler<TIndex>>;
-  std::shared_ptr<bool> alive_ = std::make_shared<bool>(true);
+  using state_handler = std::unique_ptr<IStateChangeHandler<TIndex>>;
+  std::unique_ptr<bool> alive_ = std::make_unique<bool>(true);
   std::size_t version_ = 0;
 
 public:
@@ -157,12 +157,12 @@ public:
     }
   }
   explicit FSM(TIndex entrance_index,
-               std::vector<std::shared_ptr<State<TIndex>>> states)
+               std::vector<std::unique_ptr<State<TIndex>>> states)
       : FSM(entrance_index, state_handler{}, std::move(states)) {}
   explicit FSM(TIndex entrance_index, state_handler handler,
-               std::vector<std::shared_ptr<State<TIndex>>> states)
+               std::vector<std::unique_ptr<State<TIndex>>> states)
       : version_(1) {
-    root_state_ = std::make_shared<State<TIndex>>(
+    root_state_ = std::make_unique<State<TIndex>>(
         entrance_index, std::move(handler), std::move(states));
     std::stack<State<TIndex> *> sta;
     sta.push(root_state_.get());
@@ -181,14 +181,14 @@ public:
       }
     }
     fsm_enter_exit_transtions_ =
-        std::make_shared<StateMachineEnterExitTransitable<TIndex>>(this);
+        std::make_unique<StateMachineEnterExitTransitable<TIndex>>(this);
     auto _transtions_subscriptes =
         fsm_enter_exit_transtions_->subscribe_block_state_change(
             [this](Transitable<TIndex> &transitable) {
               OnBlockStateChange(&transitable);
             });
     hold_exit_sub_ =
-        std::make_shared<ExitSub>(std::move(_transtions_subscriptes));
+        std::make_unique<ExitSub>(std::move(_transtions_subscriptes));
   }
   ~FSM() {
     if (alive_) {
@@ -262,22 +262,22 @@ public:
       throw std::runtime_error(
           "Finite State Machine Cannot Append Transition On Running!");
     }
-    std::shared_ptr<Transition<TIndex>> transition;
-    std::shared_ptr<typename Transitable<TIndex>::blocksubscribe>
+    std::unique_ptr<Transition<TIndex>> transition;
+    std::unique_ptr<typename Transitable<TIndex>::blocksubscribe>
         holdsubscripte;
     if (departure == destination) {
       auto it = all_states_.find(departure);
       if (it == all_states_.end())
         throw std::runtime_error("Not found departure");
       State<TIndex> *state = it->second;
-      transition = std::make_shared<SelfTransition<TIndex>>(
+      transition = std::make_unique<SelfTransition<TIndex>>(
           *state, requirement, std::move(transitionHandler), enterHistory);
       auto subscription = transition->subscribe_block_state_change(
           [this](Transitable<TIndex> &transitable) {
             OnBlockStateChange(&transitable);
           });
       holdsubscripte =
-          std::make_shared<typename Transitable<TIndex>::blocksubscribe>(
+          std::make_unique<typename Transitable<TIndex>::blocksubscribe>(
               std::move(subscription));
       state->addtransition(std::move(transition), std::move(holdsubscripte));
       return;
@@ -298,7 +298,7 @@ public:
     } else if (lca == dest_state) {
       dest_state = depart_state->ExitusState();
     }
-    transition = std::make_shared<CrossBranchingTransition<TIndex>>(
+    transition = std::make_unique<CrossBranchingTransition<TIndex>>(
         *depart_state, *dest_state, *lca, requirement,
         std::move(transitionHandler), enterHistory);
     auto subscription = transition->subscribe_block_state_change(
@@ -306,7 +306,7 @@ public:
           OnBlockStateChange(&transitable);
         });
     holdsubscripte =
-        std::make_shared<typename Transitable<TIndex>::blocksubscribe>(
+        std::make_unique<typename Transitable<TIndex>::blocksubscribe>(
             std::move(subscription));
     depart_state->addtransition(std::move(transition),
                                 std::move(holdsubscripte));

@@ -36,6 +36,12 @@ public:
   FormatCode GetFormat() const noexcept {
     return FormatCode::BooleanFormatCode;
   }
+    type Value() const {
+      if (values.empty()) {
+        return type{};
+      }
+    return values.front();
+  }
   std::size_t Size() noexcept { return values.size() << LogOfElemBytesCount; }
   bool ParseContent(std::string_view _context) {
     auto subStrings = StringUtils::SplitAndRemoveEmpty(_context);

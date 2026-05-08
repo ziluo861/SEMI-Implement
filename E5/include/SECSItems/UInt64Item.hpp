@@ -13,6 +13,12 @@ private:
   static constexpr std::uint8_t SizeFilter = sizeof(type) - 1;
 
 public:
+  type Value() const {
+      if (values.empty()) {
+        return type{};
+      }
+    return values.front();
+  }
   FormatCode GetFormat() const noexcept { return FormatCode::UInt64FormatCode; }
   std::size_t Size() noexcept { return values.size() << LogOfElemBytesCount; }
   bool ParseContent(std::string_view _context) {

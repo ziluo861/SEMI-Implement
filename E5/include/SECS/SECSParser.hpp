@@ -11,7 +11,7 @@ private:
   static constexpr char RangeEndMark = '>';
   static constexpr std::uint8_t LengthBytesCountFilter = 0x03;
   static constexpr std::uint8_t FormatCodeFilter = 0xFC;
-  using ParseResult = std::optional<std::shared_ptr<SECSItemBase>>;
+  using ParseResult = std::optional<std::unique_ptr<SECSItemBase>>;
   static bool GetItemWithoutContent(std::string_view raw, std::string &context,
                                     std::string &base) noexcept {
     std::smatch base_match;

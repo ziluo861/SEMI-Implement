@@ -101,24 +101,24 @@ public:
 
 template <typename TValue>
   requires std::copy_constructible<TValue> && EqualityComparable<TValue>
-auto make_var_ref(TValue default_value) -> std::shared_ptr<VarRef<TValue>> {
-  return std::shared_ptr<VarRef<TValue>>(
+auto make_var_ref(TValue default_value) -> std::unique_ptr<VarRef<TValue>> {
+  return std::unique_ptr<VarRef<TValue>>(
       new VarRef<TValue>(std::move(default_value)));
 }
 
 template <typename TValue>
   requires std::copy_constructible<TValue> && EqualityComparable<TValue>
 auto make_source_var_ref(TValue default_value)
-    -> std::shared_ptr<SourceVarRef<TValue>> {
-  return std::make_shared<SourceVarRef<TValue>>(std::move(default_value));
+    -> std::unique_ptr<SourceVarRef<TValue>> {
+  return std::make_unique<SourceVarRef<TValue>>(std::move(default_value));
 }
 
 template <typename TValue>
   requires std::copy_constructible<TValue> && EqualityComparable<TValue>
 auto make_var_ref(TValue default_value,
                   std::function<bool(const TValue &, const TValue &)> comparer)
-    -> std::shared_ptr<VarRef<TValue>> {
-  return std::shared_ptr<VarRef<TValue>>(
+    -> std::unique_ptr<VarRef<TValue>> {
+  return std::unique_ptr<VarRef<TValue>>(
       new VarRef<TValue>(std::move(default_value), std::move(comparer)));
 }
 
@@ -127,7 +127,7 @@ template <typename TValue>
 auto make_source_var_ref(
     TValue default_value,
     std::function<bool(const TValue &, const TValue &)> comparer)
-    -> std::shared_ptr<SourceVarRef<TValue>> {
-  return std::make_shared<SourceVarRef<TValue>>(std::move(default_value),
+    -> std::unique_ptr<SourceVarRef<TValue>> {
+  return std::make_unique<SourceVarRef<TValue>>(std::move(default_value),
                                                 std::move(comparer));
 }

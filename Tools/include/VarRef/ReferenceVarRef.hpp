@@ -453,7 +453,7 @@ private:
   };
 
 private:
-  std::shared_ptr<IBinderBase> binder_;
+  std::unique_ptr<IBinderBase> binder_;
   std::optional<BinderToken> subscribe_;
   void UnBind() {
     if (!binder_)
@@ -467,7 +467,7 @@ public:
       : BaseType(default_value, std::move(com)) {}
   ~ReferenceVarRef() { UnBind(); }
   bool Bind(std::function<
-            std::tuple<std::shared_ptr<IBinderBase>, BinderToken, TValue>()>
+            std::tuple<std::unique_ptr<IBinderBase>, BinderToken, TValue>()>
                 factory) {
     if (binder_)
       return false;
@@ -493,10 +493,10 @@ public:
   bool BindTo(VarRef<TValue> &src) {
     return Bind([&] {
       using B = Binder<TValue>;
-      auto b = std::make_shared<B>(&src);
+      auto b = std::make_unique<B>(&src);
       auto tok =
           b->BindSubscribe([this](const TValue &v) { OnValueChange(v); });
-      return std::make_tuple(std::shared_ptr<IBinderBase>(std::move(b)),
+      return std::make_tuple(std::unique_ptr<IBinderBase>(std::move(b)),
                              std::move(tok), src.value());
     });
   }
@@ -508,11 +508,11 @@ public:
     Fn fn(std::forward<F>(func));
     return Bind([&] {
       using B = FunctionBinder<Fn, Ts...>;
-      auto b = std::make_shared<B>(fn, (&srcs)...);
+      auto b = std::make_unique<B>(fn, (&srcs)...);
       auto tok =
           b->BindSubscribe([this](const TValue &v) { OnValueChange(v); });
       TValue init = static_cast<TValue>(std::invoke(fn, srcs.value()...));
-      return std::make_tuple(std::shared_ptr<IBinderBase>(std::move(b)),
+      return std::make_tuple(std::unique_ptr<IBinderBase>(std::move(b)),
                              std::move(tok), init);
     });
   }
@@ -526,11 +526,11 @@ public:
       TValue init = seed;
       for (auto *s : uniq)
         init = init + selector(s->value());
-      auto b = std::make_shared<B>(
+      auto b = std::make_unique<B>(
           init, std::function<TValue(const TSource &)>(selector), uniq);
       auto tok =
           b->BindSubscribe([this](const TValue &v) { OnValueChange(v); });
-      return std::make_tuple(std::shared_ptr<IBinderBase>(std::move(b)),
+      return std::make_tuple(std::unique_ptr<IBinderBase>(std::move(b)),
                              std::move(tok), init);
     });
   }
@@ -561,10 +561,10 @@ public:
                      : cmp(init, uniq[i]->value()))
             init = uniq[i]->value();
         }
-        auto b = std::make_shared<B>(is_min, std::move(cmp), uniq);
+        auto b = std::make_unique<B>(is_min, std::move(cmp), uniq);
         auto tok =
             b->BindSubscribe([this](const TValue &v) { this->set_value(v); });
-        return std::make_tuple(std::shared_ptr<IBinderBase>(std::move(b)),
+        return std::make_tuple(std::unique_ptr<IBinderBase>(std::move(b)),
                                std::move(tok), init);
       });
     } else {
@@ -576,10 +576,10 @@ public:
                      : (tri_cmp(cmp, init, uniq[i]->value()) < 0))
             init = uniq[i]->value();
         auto b =
-            std::make_shared<B>(is_min, this->value(), std::move(cmp), uniq);
+            std::make_unique<B>(is_min, this->value(), std::move(cmp), uniq);
         auto tok =
             b->BindSubscribe([this](const TValue &v) { OnValueChange(v); });
-        return std::make_tuple(std::shared_ptr<IBinderBase>(std::move(b)),
+        return std::make_tuple(std::unique_ptr<IBinderBase>(std::move(b)),
                                std::move(tok), init);
       });
     }

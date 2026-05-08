@@ -6,6 +6,7 @@
 #include <span>
 #include <string_view>
 #include <vector>
+#include "SECSConverter.hpp"
 
 class SECSItemBase {
 public:
@@ -19,6 +20,19 @@ public:
   virtual std::size_t Size() noexcept {
     return std::numeric_limits<std::size_t>::max();
   }
+    template <typename T>
+    static bool ConvertTo(const SECSItemBase& item, T& value)
+    {
+        using U = std::remove_cvref_t<T>;
+        return SECSConverter<U>::to(item, value);
+    }
+
+    template <typename T>
+    static std::unique_ptr<SECSItemBase> ConvertFrom(T&& value)
+    {
+        using U = std::remove_cvref_t<T>;
+        return SECSConverter<U>::from(std::forward<T>(value));
+    }
 
 protected:
   SECSItemBase() = default;

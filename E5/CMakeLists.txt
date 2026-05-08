@@ -16,6 +16,7 @@ target_include_directories(${Target} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include/SECShead
     ${CMAKE_CURRENT_SOURCE_DIR}/include/SECSItems
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Convert
 )
 
 target_sources(${Target} PRIVATE 

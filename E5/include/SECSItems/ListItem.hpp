@@ -2,16 +2,24 @@
 #include <SECSBase.hpp>
 #include <SECSItem.hpp>
 #include <SECSParser.hpp>
+#include <cstddef>
 #include <memory>
 #include <vector>
 
 class ListItem : public SECSItem<ListItem> {
 private:
-  std::vector<std::shared_ptr<SECSItemBase>> valueItems;
+  std::vector<std::unique_ptr<SECSItemBase>> valueItems;
 
 public:
+  ListItem() = default;
+  ListItem(std::vector<std::unique_ptr<SECSItemBase>> value) :  valueItems(std::move(value)){
+  }
+  const std::vector<std::unique_ptr<SECSItemBase>>& Values() const {
+    return valueItems;
+  }
   FormatCode GetFormat() const noexcept { return FormatCode::ListFormatCode; }
   std::size_t Size() noexcept { return valueItems.size(); }
+  std::size_t Count() const noexcept {return valueItems.size();}
   bool ParseContent(std::string_view _context) {
     valueItems.clear();
     if (_context.empty()) {
@@ -62,7 +70,7 @@ public:
     valueItems.clear();
     valueItems.reserve(length);
     for (int i = 0; i < length; i++) {
-      std::optional<std::shared_ptr<SECSItemBase>> _subItem;
+      std::optional<std::unique_ptr<SECSItemBase>> _subItem;
       auto _result = SECSParser::TryDeserialize(bytes, _subItem);
       if (!_result || !_subItem.has_value()) {
         return false;

@@ -13,7 +13,7 @@ private:
   std::vector<std::pair<std::size_t, CallbackType>> listeners_;
   bool block_ = true;
   std::size_t id_ = 0;
-  std::shared_ptr<bool> alive_;
+  std::unique_ptr<bool> alive_;
 
 public:
   class blocksubscribe {
@@ -64,7 +64,7 @@ public:
     }
   };
 
-  Transitable() : alive_(std::make_shared<bool>(true)) {}
+  Transitable() : alive_(std::make_unique<bool>(true)) {}
 
   virtual ~Transitable() {
     if (alive_) {
