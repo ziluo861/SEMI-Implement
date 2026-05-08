@@ -1,5 +1,5 @@
-#include "ListItem.hpp"
 #include "SECSBase.hpp"
+#include "SECSConverter.hpp"
 #include "SECSParser.hpp"
 #include "ConvertHelper.hpp"
 #include <cstdint>
@@ -27,14 +27,14 @@ std::ifstream ifs("/Users/luojian/1908/Semi/semiTest.txt", std::ios::binary | st
     std::string dataRaw {buffer.data()};
     std::cout << dataRaw << std::endl;
     auto item = SECSParser::TryParseContent(dataRaw);
-    std::uint32_t a{}, b{};
-    const SECSItemBase* subListItem{};
-    bool result = ConvertToValues(*item->get(), a, b, subListItem);
-    if (!result) {
-        std::cout << "ConvertToValues failed\n";
+    SECSItemBase *it1, *it2;
+    if (!ConvertToValues(*item->get(), it1, it2)) {
+        std::cout << "parse error";
+        return -1;
     }
-    std::cout << "a = " << a << ", b = " << b << std::endl;
-
-    //result = ConvertToValues(subListItem->get())
+    std::uint32_t a, b;
+    SECSConverter<std::uint32_t>::to(*it1, a);
+    SECSConverter<std::uint32_t>::to(*it2, b);
+    std::cout << a << " " << b << std::endl;
     return 0;
 }

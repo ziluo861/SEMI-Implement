@@ -8,7 +8,7 @@
 template <typename T>
 struct SECSConverter<std::optional<T>>
 {
-    static bool to(const SECSItemBase& item, std::optional<T>& value)
+    static bool to(SECSItemBase& item, std::optional<T>& value)
     {
         T temp{};
 

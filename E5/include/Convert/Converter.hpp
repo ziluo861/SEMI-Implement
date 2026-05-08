@@ -5,9 +5,9 @@
 template <typename ItemType, typename ValueType>
 struct ValueItemConverter
 {
-    static bool to(const SECSItemBase& item, ValueType& value)
+    static bool to(SECSItemBase& item, ValueType& value)
     {
-        auto target = dynamic_cast<const ItemType*>(&item);
+        auto target = dynamic_cast<ItemType*>(&item);
         if (!target)
             return false;
 

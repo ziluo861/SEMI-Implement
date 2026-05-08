@@ -21,7 +21,7 @@ public:
     return std::numeric_limits<std::size_t>::max();
   }
     template <typename T>
-    static bool ConvertTo(const SECSItemBase& item, T& value)
+    static bool ConvertTo(SECSItemBase& item, T& value)
     {
         using U = std::remove_cvref_t<T>;
         return SECSConverter<U>::to(item, value);

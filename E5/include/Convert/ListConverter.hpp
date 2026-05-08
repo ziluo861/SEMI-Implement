@@ -5,7 +5,7 @@
 inline bool ConvertOneListElement(
     const ListItem& list,
     std::size_t index,
-    const SECSItemBase*& out)
+    SECSItemBase*& out)
 {
     if (index >= list.Count()) {
         out = nullptr;
@@ -22,7 +22,7 @@ bool ConvertOneListElement(
     std::size_t index,
     T& out)
 {
-    const SECSItemBase* child = nullptr;
+    SECSItemBase* child = nullptr;
 
     if (!ConvertOneListElement(list, index, child)) {
         out = T{};

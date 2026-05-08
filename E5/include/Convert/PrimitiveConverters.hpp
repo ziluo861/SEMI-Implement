@@ -1,26 +1,24 @@
 #pragma once
 #include "SECSBase.hpp"
 #include "SECSConverter.hpp"
-#include "ListItem.hpp"
 #include <vector>
-
-
+#include "ListItem.hpp"
 template <typename T>
 struct SECSConverter<std::vector<T>>
 {
-    static bool to(const SECSItemBase& item, std::vector<T>& value)
+    static bool to(SECSItemBase& item, std::vector<T>& value)
     {
-        auto list = dynamic_cast<const ListItem*>(&item);
+        auto list = dynamic_cast<ListItem*>(&item);
         if (!list)
             return false;
 
         std::vector<T> result;
-        result.reserve(list->Count());
+        result.reserve(list->Size());
 
         for (const auto& child : list->Values())
         {
             T temp{};
-            if (!ConvertTo(*child, temp))
+            if (!SECSItemBase::ConvertTo(*child, temp))
                 return false;
 
             result.push_back(std::move(temp));
@@ -37,7 +35,7 @@ struct SECSConverter<std::vector<T>>
 
         for (const auto& value : values)
         {
-            auto item = ConvertFrom(value);
+            auto item = SECSItemBase::ConvertFrom(value);
             if (!item)
                 return nullptr;
 
