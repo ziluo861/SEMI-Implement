@@ -7,7 +7,7 @@
 
 class ListItem : public SECSItem<ListItem> {
 private:
-  std::vector<std::unique_ptr<SECSItemBase>> valueItems;
+  std::vector<std::shared_ptr<SECSItemBase>> valueItems;
 
 public:
   FormatCode GetFormat() const noexcept { return FormatCode::ListFormatCode; }
@@ -62,7 +62,7 @@ public:
     valueItems.clear();
     valueItems.reserve(length);
     for (int i = 0; i < length; i++) {
-      std::optional<std::unique_ptr<SECSItemBase>> _subItem;
+      std::optional<std::shared_ptr<SECSItemBase>> _subItem;
       auto _result = SECSParser::TryDeserialize(bytes, _subItem);
       if (!_result || !_subItem.has_value()) {
         return false;

@@ -61,77 +61,77 @@ public:
 };
 
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> BiggerThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> BiggerThan(VarRef<TValue> &left,
                                                VarRef<TValue> &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value > r_value;
       });
 }
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> BiggerThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> BiggerThan(VarRef<TValue> &left,
                                                const TValue &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value > r_value;
       });
 }
 
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> LessThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> LessThan(VarRef<TValue> &left,
                                              VarRef<TValue> &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value < r_value;
       });
 }
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> LessThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> LessThan(VarRef<TValue> &left,
                                              const TValue &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value < r_value;
       });
 }
 
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> NoBiggerThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> NoBiggerThan(VarRef<TValue> &left,
                                                  VarRef<TValue> &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value <= r_value;
       });
 }
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> NoBiggerThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> NoBiggerThan(VarRef<TValue> &left,
                                                  const TValue &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value <= r_value;
       });
 }
 
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> NoLessThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> NoLessThan(VarRef<TValue> &left,
                                                VarRef<TValue> &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value >= r_value;
       });
 }
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> NoLessThan(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> NoLessThan(VarRef<TValue> &left,
                                                const TValue &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [](const TValue &l_value, const TValue &r_value) {
         return l_value >= r_value;
       });
 }
 
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> EqualTo(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> EqualTo(VarRef<TValue> &left,
                                             VarRef<TValue> &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right,
       [&left, &right](const TValue &l_value, const TValue &r_value) {
         if (left.same_comparer(right)) {
@@ -141,23 +141,23 @@ std::unique_ptr<RequirementMonitor> EqualTo(VarRef<TValue> &left,
       });
 }
 template <typename TValue>
-std::unique_ptr<RequirementMonitor> EqualTo(VarRef<TValue> &left,
+std::shared_ptr<RequirementMonitor> EqualTo(VarRef<TValue> &left,
                                             const TValue &right) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(
+  return std::make_shared<VarRefCompareMonitor<TValue>>(
       left, right, [&left](const TValue &l_value, const TValue &r_value) {
         return left.Equals(l_value, r_value);
       });
 }
 
 template <typename TValue>
-std::unique_ptr<RequirementMonitor>
+std::shared_ptr<RequirementMonitor>
 CompareTo(VarRef<TValue> &left, VarRef<TValue> &right, Compare<TValue> comp) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(left, right,
+  return std::make_shared<VarRefCompareMonitor<TValue>>(left, right,
                                                         std::move(comp));
 }
 template <typename TValue>
-std::unique_ptr<RequirementMonitor>
+std::shared_ptr<RequirementMonitor>
 CompareTo(VarRef<TValue> &left, const TValue &right, Compare<TValue> comp) {
-  return std::make_unique<VarRefCompareMonitor<TValue>>(left, right,
+  return std::make_shared<VarRefCompareMonitor<TValue>>(left, right,
                                                         std::move(comp));
 }

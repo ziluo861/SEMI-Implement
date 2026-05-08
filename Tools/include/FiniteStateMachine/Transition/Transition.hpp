@@ -24,7 +24,7 @@ private:
   RequirementMonitor *requirement_;
   std::atomic<bool> entered_{false};
 
-  std::unique_ptr<RequirementMonitor::fulfillsubscribe> holdfulfillsubscribe_;
+  std::shared_ptr<RequirementMonitor::fulfillsubscribe> holdfulfillsubscribe_;
 
 public:
   explicit Transition(State<TIndex> &departure, State<TIndex> &destination,
@@ -46,7 +46,7 @@ public:
             OnRequirementStateChanged(requirement);
           });
       holdfulfillsubscribe_ =
-          std::make_unique<RequirementMonitor::fulfillsubscribe>(
+          std::make_shared<RequirementMonitor::fulfillsubscribe>(
               std::move(subscribe));
       if (requirement_->Fulfilled()) {
         BaseType::set_blocked(false);

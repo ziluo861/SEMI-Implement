@@ -14,37 +14,38 @@
 #include "SECSItems/UInt64Item.hpp"
 #include "SECSItems/UInt8Item.hpp"
 #include <SECS/SECSFactory.hpp>
+#include <memory>
 
-std::unique_ptr<SECSItemBase> SECSFactory::createItem(FormatCode _code) {
+std::shared_ptr<SECSItemBase> SECSFactory::createItem(FormatCode _code) {
   switch (_code) {
   case FormatCode::ASCIIFormatCode:
-    return std::make_unique<ASCIIItem>();
+    return std::make_shared<ASCIIItem>();
   case FormatCode::ListFormatCode:
-    return std::make_unique<ListItem>();
+    return std::make_shared<ListItem>();
   case FormatCode::BinaryFormatCode:
-    return std::make_unique<BinaryItem>();
+    return std::make_shared<BinaryItem>();
   case FormatCode::BooleanFormatCode:
-    return std::make_unique<BooleanItem>();
+    return std::make_shared<BooleanItem>();
   case FormatCode::Int64FormatCode:
-    return std::make_unique<Int64Item>();
+    return std::make_shared<Int64Item>();
   case FormatCode::Int8FormatCode:
-    return std::make_unique<Int8Item>();
+    return std::make_shared<Int8Item>();
   case FormatCode::Int16FormatCode:
-    return std::make_unique<Int16Item>();
+    return std::make_shared<Int16Item>();
   case FormatCode::Int32FormatCode:
-    return std::make_unique<Int32Item>();
+    return std::make_shared<Int32Item>();
   case FormatCode::DoubleFormatCode:
-    return std::make_unique<DoubleItem>();
+    return std::make_shared<DoubleItem>();
   case FormatCode::FloatFormatCode:
-    return std::make_unique<FloatItem>();
+    return std::make_shared<FloatItem>();
   case FormatCode::UInt64FormatCode:
-    return std::make_unique<UInt64Item>();
+    return std::make_shared<UInt64Item>();
   case FormatCode::UInt8FormatCode:
-    return std::make_unique<UInt8Item>();
+    return std::make_shared<UInt8Item>();
   case FormatCode::UInt32FormatCode:
-    return std::make_unique<UInt32Item>();
+    return std::make_shared<UInt32Item>();
   case FormatCode::UInt16FormatCode:
-    return std::make_unique<UInt16Item>();
+    return std::make_shared<UInt16Item>();
   case FormatCode::None:
     return nullptr;
   default:

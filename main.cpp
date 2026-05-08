@@ -102,25 +102,25 @@ void test_basic_linear_fsm() {
     std::cout << "\n=== 测试1: 基本线性状态机 ===\n";
 
     // 1) 三个叶状态的进/出处理器
-    auto idle_handler = std::make_unique<StateChangeHandler<StateId>>(
+    auto idle_handler = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "进入空闲状态\n"; },
         [](State<StateId>&){ std::cout << "退出空闲状态\n"; }
     );
-    auto working_handler = std::make_unique<StateChangeHandler<StateId>>(
+    auto working_handler = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "进入工作状态\n"; },
         [](State<StateId>&){ std::cout << "退出工作状态\n"; }
     );
-    auto error_handler = std::make_unique<StateChangeHandler<StateId>>(
+    auto error_handler = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "进入错误状态\n"; },
         [](State<StateId>&){ std::cout << "退出错误状态\n"; }
     );
 
-    std::vector<std::unique_ptr<State<StateId>>> states;
-    states.push_back(std::make_unique<State<StateId>>(StateId::IDLE,    std::move(idle_handler)));
-    states.push_back(std::make_unique<State<StateId>>(StateId::WORKING, std::move(working_handler)));
-    states.push_back(std::make_unique<State<StateId>>(StateId::ERROR,   std::move(error_handler)));
+    std::vector<std::shared_ptr<State<StateId>>> states;
+    states.push_back(std::make_shared<State<StateId>>(StateId::IDLE,    std::move(idle_handler)));
+    states.push_back(std::make_shared<State<StateId>>(StateId::WORKING, std::move(working_handler)));
+    states.push_back(std::make_shared<State<StateId>>(StateId::ERROR,   std::move(error_handler)));
 
-    auto fsm_handler = std::make_unique<StateChangeHandler<StateId>>(
+    auto fsm_handler = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "FSM启动\n"; },
         [](State<StateId>&){ std::cout << "FSM停止\n"; }
     );
@@ -133,8 +133,8 @@ void test_basic_linear_fsm() {
     });
 
     // 需求
-    auto temp_ok  = std::make_unique<TemperatureRequirement>();
-    auto timer_3s = std::make_unique<TimerRequirement>(3);
+    auto temp_ok  = std::make_shared<TemperatureRequirement>();
+    auto timer_3s = std::make_shared<TimerRequirement>(3);
 
     // 2) 必备：根入口 -> IDLE（初始子状态）
     fsm.AppendTransition(StateId::MACHINE_ROOT, StateId::IDLE, nullptr, nullptr, false);
@@ -173,39 +173,39 @@ void test_hierarchical_fsm() {
     std::cout << "\n=== 测试2: 层次状态机 ===\n";
 
     // 子状态（电机）
-    auto motor_run_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto motor_run_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "电机开始运行\n"; },
         [](State<StateId>&){ std::cout << "电机停止运行\n"; }
     );
-    auto motor_stop_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto motor_stop_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "电机处于停止状态\n"; },
         [](State<StateId>&){ std::cout << "电机退出停止状态\n"; }
     );
-    std::vector<std::unique_ptr<State<StateId>>> motor_states;
-    motor_states.push_back(std::make_unique<State<StateId>>(StateId::MOTOR_STOPPED, std::move(motor_stop_h)));
-    motor_states.push_back(std::make_unique<State<StateId>>(StateId::MOTOR_RUNNING, std::move(motor_run_h)));
+    std::vector<std::shared_ptr<State<StateId>>> motor_states;
+    motor_states.push_back(std::make_shared<State<StateId>>(StateId::MOTOR_STOPPED, std::move(motor_stop_h)));
+    motor_states.push_back(std::make_shared<State<StateId>>(StateId::MOTOR_RUNNING, std::move(motor_run_h)));
 
     // 复合状态：ON（包含电机状态）
-    auto on_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto on_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "机器开启\n"; },
         [](State<StateId>&){ std::cout << "机器关闭\n"; }
     );
-    auto st_on = std::make_unique<State<StateId>>(StateId::MACHINE_ON, std::move(on_h), std::move(motor_states));
+    auto st_on = std::make_shared<State<StateId>>(StateId::MACHINE_ON, std::move(on_h), std::move(motor_states));
 
     // 简单状态：OFF
-    auto off_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto off_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "机器关闭状态\n"; },
         [](State<StateId>&){ std::cout << "退出机器关闭状态\n"; }
     );
-    auto st_off = std::make_unique<State<StateId>>(StateId::MACHINE_OFF, std::move(off_h));
+    auto st_off = std::make_shared<State<StateId>>(StateId::MACHINE_OFF, std::move(off_h));
 
     // 根
-    auto root_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto root_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "层次状态机启动\n"; },
         [](State<StateId>&){ std::cout << "层次状态机停止\n"; }
     );
 
-    std::vector<std::unique_ptr<State<StateId>>> root_states;
+    std::vector<std::shared_ptr<State<StateId>>> root_states;
     root_states.push_back(std::move(st_off));
     root_states.push_back(std::move(st_on));
 
@@ -258,28 +258,28 @@ void test_self_transition_and_history() {
     std::cout << "\n=== 测试3: 自转换和历史状态 ===\n";
 
     // 子图：电机
-    auto run_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto run_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "电机开始运行\n"; },
         [](State<StateId>&){ std::cout << "电机停止运行\n"; }
     );
-    auto stop_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto stop_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "电机处于停止状态\n"; },
         [](State<StateId>&){ std::cout << "电机退出停止状态\n"; }
     );
-    std::vector<std::unique_ptr<State<StateId>>> motor;
-    motor.push_back(std::make_unique<State<StateId>>(StateId::MOTOR_STOPPED, std::move(stop_h)));
-    motor.push_back(std::make_unique<State<StateId>>(StateId::MOTOR_RUNNING, std::move(run_h)));
+    std::vector<std::shared_ptr<State<StateId>>> motor;
+    motor.push_back(std::make_shared<State<StateId>>(StateId::MOTOR_STOPPED, std::move(stop_h)));
+    motor.push_back(std::make_shared<State<StateId>>(StateId::MOTOR_RUNNING, std::move(run_h)));
 
-    auto on_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto on_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "进入 ON 复合状态\n"; },
         [](State<StateId>&){ std::cout << "退出 ON 复合状态\n"; }
     );
-    auto st_on = std::make_unique<State<StateId>>(StateId::MACHINE_ON, std::move(on_h), std::move(motor));
+    auto st_on = std::make_shared<State<StateId>>(StateId::MACHINE_ON, std::move(on_h), std::move(motor));
 
-    std::vector<std::unique_ptr<State<StateId>>> root_states;
+    std::vector<std::shared_ptr<State<StateId>>> root_states;
     root_states.push_back(std::move(st_on));
 
-    auto root_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto root_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "自转换示例 FSM 启动\n"; },
         [](State<StateId>&){ std::cout << "自转换示例 FSM 停止\n"; }
     );
@@ -324,9 +324,9 @@ void test_error_conditions() {
     
     try {
         // 测试重复状态索引
-        std::vector<std::unique_ptr<State<StateId>>> duplicate_states;
-        duplicate_states.push_back(std::make_unique<State<StateId>>(StateId::IDLE));
-        duplicate_states.push_back(std::make_unique<State<StateId>>(StateId::IDLE)); // 重复索引
+        std::vector<std::shared_ptr<State<StateId>>> duplicate_states;
+        duplicate_states.push_back(std::make_shared<State<StateId>>(StateId::IDLE));
+        duplicate_states.push_back(std::make_shared<State<StateId>>(StateId::IDLE)); // 重复索引
         
         std::cout << "尝试创建重复索引的FSM...\n";
         try {
@@ -337,8 +337,8 @@ void test_error_conditions() {
         }
         
         // 测试不存在的状态转换
-        std::vector<std::unique_ptr<State<StateId>>> valid_states;
-        valid_states.push_back(std::make_unique<State<StateId>>(StateId::IDLE));
+        std::vector<std::shared_ptr<State<StateId>>> valid_states;
+        valid_states.push_back(std::make_shared<State<StateId>>(StateId::IDLE));
         
         FSM<StateId> fsm(StateId::IDLE, nullptr, std::move(valid_states));
         
@@ -363,46 +363,46 @@ void test_cross_branch_and_history_reentry() {
     std::cout << "\n=== 测试4: 跨分支(LCA) + 历史回放 ===\n";
 
     // 子图（电机）
-    auto run_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto run_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "电机开始运行\n"; },
         [](State<StateId>&){ std::cout << "电机停止运行\n"; }
     );
-    auto stop_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto stop_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "电机处于停止状态\n"; },
         [](State<StateId>&){ std::cout << "电机退出停止状态\n"; }
     );
-    std::vector<std::unique_ptr<State<StateId>>> motor;
-    motor.push_back(std::make_unique<State<StateId>>(StateId::MOTOR_STOPPED, std::move(stop_h)));
-    motor.push_back(std::make_unique<State<StateId>>(StateId::MOTOR_RUNNING, std::move(run_h)));
+    std::vector<std::shared_ptr<State<StateId>>> motor;
+    motor.push_back(std::make_shared<State<StateId>>(StateId::MOTOR_STOPPED, std::move(stop_h)));
+    motor.push_back(std::make_shared<State<StateId>>(StateId::MOTOR_RUNNING, std::move(run_h)));
 
     // 复合 ON
-    auto on_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto on_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "机器开启\n"; },
         [](State<StateId>&){ std::cout << "机器关闭\n"; }
     );
-    auto st_on = std::make_unique<State<StateId>>(StateId::MACHINE_ON, std::move(on_h), std::move(motor));
+    auto st_on = std::make_shared<State<StateId>>(StateId::MACHINE_ON, std::move(on_h), std::move(motor));
 
     // 简单 OFF
-    auto off_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto off_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "机器关闭状态\n"; },
         [](State<StateId>&){ std::cout << "退出机器关闭状态\n"; }
     );
-    auto st_off = std::make_unique<State<StateId>>(StateId::MACHINE_OFF, std::move(off_h));
+    auto st_off = std::make_shared<State<StateId>>(StateId::MACHINE_OFF, std::move(off_h));
 
     // 简单 ERROR
-    auto err_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto err_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "进入错误状态\n"; },
         [](State<StateId>&){ std::cout << "退出错误状态\n"; }
     );
-    auto st_err = std::make_unique<State<StateId>>(StateId::ERROR, std::move(err_h));
+    auto st_err = std::make_shared<State<StateId>>(StateId::ERROR, std::move(err_h));
 
     // 根
-    auto root_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto root_h = std::make_shared<StateChangeHandler<StateId>>(
         [](State<StateId>&){ std::cout << "跨分支 FSM 启动\n"; },
         [](State<StateId>&){ std::cout << "跨分支 FSM 停止\n"; }
     );
 
-    std::vector<std::unique_ptr<State<StateId>>> root_states;
+    std::vector<std::shared_ptr<State<StateId>>> root_states;
     root_states.push_back(std::move(st_off));
     root_states.push_back(std::move(st_on));
     root_states.push_back(std::move(st_err));
@@ -465,15 +465,15 @@ void test_runtime_append_and_lca_error() {
     std::cout << "\n=== 测试5: 运行时追加转移 & 非同树异常 ===\n";
 
     // 简单 FSM：ROOT{IDLE, WORKING}
-    auto idle_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto idle_h = std::make_shared<StateChangeHandler<StateId>>(
         [](auto&){ std::cout << "进入IDLE\n"; }, [](auto&){ std::cout << "退出IDLE\n"; }
     );
-    auto work_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto work_h = std::make_shared<StateChangeHandler<StateId>>(
         [](auto&){ std::cout << "进入WORKING\n"; }, [](auto&){ std::cout << "退出WORKING\n"; }
     );
-    std::vector<std::unique_ptr<State<StateId>>> states;
-    states.push_back(std::make_unique<State<StateId>>(StateId::IDLE, std::move(idle_h)));
-    states.push_back(std::make_unique<State<StateId>>(StateId::WORKING, std::move(work_h)));
+    std::vector<std::shared_ptr<State<StateId>>> states;
+    states.push_back(std::make_shared<State<StateId>>(StateId::IDLE, std::move(idle_h)));
+    states.push_back(std::make_shared<State<StateId>>(StateId::WORKING, std::move(work_h)));
 
     FSM<StateId> fsm(StateId::MACHINE_ROOT, nullptr, std::move(states));
     auto sub = fsm.subscribe([](const StateId& f, const StateId& t){
@@ -505,8 +505,8 @@ void test_runtime_append_and_lca_error() {
         // 直接调用 AppendTransition 只允许用枚举索引查找；所以我们用“不同树”的等价测试：
         // 在 *另一个* FSM 上建立 WORKING，尝试在本 FSM 里从 IDLE -> WORKING（WORKING 不在这棵树里），
         // 这会触发 Not found destination。
-        std::vector<std::unique_ptr<State<StateId>>> only_idle;
-        only_idle.push_back(std::make_unique<State<StateId>>(StateId::IDLE));
+        std::vector<std::shared_ptr<State<StateId>>> only_idle;
+        only_idle.push_back(std::make_shared<State<StateId>>(StateId::IDLE));
         FSM<StateId> fsm2(StateId::MACHINE_ROOT, nullptr, std::move(only_idle));
         // fsm2 只有 IDLE，没有 WORKING
         fsm2.AppendTransition(StateId::MACHINE_ROOT, StateId::IDLE, nullptr, nullptr, false);
@@ -538,22 +538,22 @@ protected:
 void test_cascade_auto_transitions() {
     std::cout << "\n=== 测试6: 级联转移（进入即满足，连跳多步） ===\n";
 
-    auto idle_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto idle_h = std::make_shared<StateChangeHandler<StateId>>(
         [](auto&){ std::cout << "进入IDLE\n"; }, [](auto&){ std::cout << "退出IDLE\n"; }
     );
-    auto work_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto work_h = std::make_shared<StateChangeHandler<StateId>>(
         [](auto&){ std::cout << "进入WORKING\n"; }, [](auto&){ std::cout << "退出WORKING\n"; }
     );
-    auto err_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto err_h = std::make_shared<StateChangeHandler<StateId>>(
         [](auto&){ std::cout << "进入ERROR\n"; }, [](auto&){ std::cout << "退出ERROR\n"; }
     );
 
-    std::vector<std::unique_ptr<State<StateId>>> states;
-    states.push_back(std::make_unique<State<StateId>>(StateId::IDLE, std::move(idle_h)));
-    states.push_back(std::make_unique<State<StateId>>(StateId::WORKING, std::move(work_h)));
-    states.push_back(std::make_unique<State<StateId>>(StateId::ERROR, std::move(err_h)));
+    std::vector<std::shared_ptr<State<StateId>>> states;
+    states.push_back(std::make_shared<State<StateId>>(StateId::IDLE, std::move(idle_h)));
+    states.push_back(std::make_shared<State<StateId>>(StateId::WORKING, std::move(work_h)));
+    states.push_back(std::make_shared<State<StateId>>(StateId::ERROR, std::move(err_h)));
 
-    auto fsm_h = std::make_unique<StateChangeHandler<StateId>>(
+    auto fsm_h = std::make_shared<StateChangeHandler<StateId>>(
         [](auto&){ std::cout << "级联 FSM 启动\n"; }, [](auto&){ std::cout << "级联 FSM 停止\n"; }
     );
     FSM<StateId> fsm(StateId::MACHINE_ROOT, std::move(fsm_h), std::move(states));
